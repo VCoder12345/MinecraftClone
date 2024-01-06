@@ -11,28 +11,43 @@
 #include <input/Controls.h>
 #include <camera/CameraMove.h>
 #include <camera/CameraSystem.h>
+#include <block/BlockRenderer.h>
+#include <block/Block.h>
 
 void ProbeScene::prepare() {
 	ResourceManager& rm = Game::instance().getResourceManager();
 
 	Shader cubeShader = rm.loadShader("cubeShader", "assets/shaders/cubeShader.vert", "assets/shaders/cubeShader.frag");
-	Texture playerTex = rm.loadTexture("dirt", "assets/sprites/block/dirt.png", true, true);
+	Shader blockShader = rm.loadShader("blockShader", "assets/shaders/blockInstanceShader.vert", "assets/shaders/blockInstanceShader.frag");
+	Texture dirtTex = rm.loadTexture("dirt", "assets/sprites/block/dirt.png", true, true);
+	Texture sandstoneTex = rm.loadTexture("sandstone", "assets/sprites/block/sandstone.png", true, true);
 
 
 	//controls
 	Input& input = Game::instance().getInput();
 
 	GroupControl* forwardControl = new GroupControl();
-	forwardControl->addControl(new JAxisControl(1));
-	forwardControl->addControl(new KeyControl(GLFW_KEY_W, 1.0f));
-	forwardControl->addControl(new KeyControl(GLFW_KEY_S, -1.0f));
+	forwardControl->addControl(new JAxisControl(JOYSTICK_FORWARD_AXIS));
+	forwardControl->addControl(new KeyControl(GLFW_KEY_W, -1.0f));
+	forwardControl->addControl(new KeyControl(GLFW_KEY_S, 1.0f));
 	input.addControl(forwardControl, "forward");
 
 	GroupControl* sideControl = new GroupControl();
-	sideControl->addControl(new JAxisControl(0));
+	sideControl->addControl(new JAxisControl(JOYSTICK_SIDE_AXIS));
 	sideControl->addControl(new KeyControl(GLFW_KEY_A, -1.0f));
 	sideControl->addControl(new KeyControl(GLFW_KEY_D, 1.0f));
 	input.addControl(sideControl, "side");
+
+	GroupControl* upControl = new GroupControl();
+	upControl->addControl(new JButtonControl(JOYSTICK_A));
+	upControl->addControl(new KeyControl(GLFW_KEY_SPACE));
+	input.addControl(upControl, "up");
+
+	GroupControl* closeControl = new GroupControl();
+	closeControl->addControl(new JButtonControl(JOYSTICK_START));
+	closeControl->addControl(new KeyControl(GLFW_KEY_ESCAPE));
+	input.addControl(closeControl, "close");
+
 
 	for (int i = 0; i < 30; ++i) {
 		for (int j = 0; j < 30; ++j) {
@@ -44,7 +59,15 @@ void ProbeScene::prepare() {
 			cmodel1 = glm::translate(cmodel1, glm::vec3(-i, 0.0f, -j));
 
 			cube1->addComponent(new Transform(cmodel1));
-			cube1->addComponent(new CubeRenderComponent(playerTex, glm::vec3(0.7f)));
+
+			if (i % 2 == 0) {
+				cube1->addComponent(new Block(sandstoneTex));
+			}
+			else {
+				cube1->addComponent(new Block(dirtTex));
+			}
+			
+			//cube1->addComponent(new CubeRenderComponent(playerTex, glm::vec3(1.0f)));
 
 			addEntity(cube1);
 		}
@@ -58,7 +81,8 @@ void ProbeScene::prepare() {
 	addEntity(camera);
 
 	addSystem(new CameraSystem());
-	addSystem(new CubeRenderer(cubeShader));
+	addSystem(new BlockRenderer(blockShader));
+	//addSystem(new CubeRenderer(cubeShader));
 }
 
 Entity& ProbeScene::getCamera() {

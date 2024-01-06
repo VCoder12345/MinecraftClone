@@ -6,6 +6,11 @@
 
 #include "Control.h"
 
+const int JOYSTICK_SIDE_AXIS = 0;
+const int JOYSTICK_FORWARD_AXIS = 1;
+const int JOYSTICK_START = 7;
+const int JOYSTICK_A = 0;
+
 class GLFWwindow;
 
 class Input {

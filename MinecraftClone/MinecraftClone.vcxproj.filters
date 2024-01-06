@@ -18,9 +18,6 @@
     <ClCompile Include="src\window\Window.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="src\debug\Log.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="src\ecs\Entity.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
@@ -61,6 +58,12 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="src\camera\CameraSystem.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="src\block\BlockRenderer.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\Transform.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
@@ -152,10 +155,20 @@
     <ClInclude Include="src\camera\CameraSystem.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="src\block\BlockGrid.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="src\block\Block.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="src\block\BlockRenderer.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\shaders\cubeShader.vert" />
     <None Include="assets\shaders\cubeShader.frag" />
-    <None Include="assets\shaders\cubeInstanceShader.vert" />
+    <None Include="assets\shaders\blockInstanceShader.vert" />
+    <None Include="assets\shaders\blockInstanceShader.frag" />
   </ItemGroup>
 </Project>

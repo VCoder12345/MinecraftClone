@@ -21,6 +21,15 @@ void Scene::addSystem(System* system) {
 	systems.push_back(system);
 }
 
+void Scene::removeEntity(Entity* entity) {
+	std::vector<Entity*>::iterator pos = std::find(entities.begin(), entities.end(), entity);
+	if (pos != entities.end()) {
+		entities.erase(pos);
+	}
+
+	delete entity;
+}
+
 void Scene::onStart() {
 	prepare();
 	for (System* s : systems) {

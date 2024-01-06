@@ -1,14 +1,14 @@
-#include "CubeRenderer.h"
+#include "BlockRenderer.h"
 
 
 #include <ecs/EntityItr.h>
 
-#include "CubeRenderComponent.h"
+#include "Block.h"
 #include <utils/Transform.h>
 
-CubeRenderer::CubeRenderer(Shader shader) : Renderer(shader) { init(); }
+BlockRenderer::BlockRenderer(Shader shader) : Renderer(shader) { init(); }
 
-void CubeRenderer::init() {
+void BlockRenderer::init() {
 	float vertices[] = {
 		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
 		 0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
@@ -75,39 +75,61 @@ void CubeRenderer::init() {
 	glBindVertexArray(0);
 }
 
-void CubeRenderer::onRender() {
-	for (Entity& entity : EntityItr<CubeRenderComponent, Transform>()) {
-		CubeRenderComponent& src = entity.getComponent<CubeRenderComponent>();
+void BlockRenderer::onRender() {
+	std::vector<glm::mat4> models;
+	std::vector<Texture> textures;
+	for (Entity& entity : EntityItr<Block, Transform>()) {
+		Block& block = entity.getComponent<Block>();
 		Transform& t = entity.getComponent<Transform>();
-
-
-
-
-		shader.use();
-
-		shader.setVec4("color", glm::vec4(src.color, src.opacity));
-
 		glm::mat4 model = t.model;
 
-
-
-		Entity& cam = Game::instance().getCurrentScene().getCamera();
-		Transform& camT = cam.getComponent<Transform>();
-
-
-
-		glm::mat4 view = camT.model;
-
-		shader.setMat4("model", model);
-		shader.setMat4("view", view);
-		shader.setMat4("projection", projection);
-
-		src.texture.bind();
-
-		shader.setInt("cubeTexture", 0);
-
-		glBindVertexArray(VAO);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-		glBindVertexArray(0);
+		models.push_back(model);
+		textures.push_back(block.texture);
 	}
+
+	int amount = models.size();
+	unsigned int instanceVBO;
+	glGenBuffers(1, &instanceVBO);
+	glBindBuffer(GL_ARRAY_BUFFER, instanceVBO);
+	glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &models[0], GL_STATIC_DRAW);
+
+	glBindVertexArray(VAO);
+
+	std::size_t vec4Size = sizeof(glm::vec4);
+	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, (void*)0);
+	glEnableVertexAttribArray(3);
+	glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, (void*)(1 * vec4Size));
+	glEnableVertexAttribArray(4);
+	glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, (void*)(2 * vec4Size));
+	glEnableVertexAttribArray(5);
+	glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, (void*)(3 * vec4Size));
+
+	glVertexAttribDivisor(2, 1);
+	glVertexAttribDivisor(3, 1);
+	glVertexAttribDivisor(4, 1);
+	glVertexAttribDivisor(5, 1);
+
+	glBindVertexArray(0);
+
+
+	shader.use();
+
+	Entity& cam = Game::instance().getCurrentScene().getCamera();
+	Transform& camT = cam.getComponent<Transform>();
+
+	glm::mat4 view = camT.model;
+
+	shader.setMat4("view", view);
+	shader.setMat4("projection", projection);
+
+	textures[0].bind();
+
+	shader.setInt("cubeTexture", 0);
+
+	glBindVertexArray(VAO);
+
+	glDrawArraysInstanced(GL_TRIANGLES, 0, 36, amount);
+	
+	glBindVertexArray(0);
 }

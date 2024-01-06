@@ -17,6 +17,8 @@ public:
 	void addEntity(Entity* entity);
 	void addSystem(System* system);
 
+	void removeEntity(Entity* entity);
+
 
 	//update methods
 	void onStart();

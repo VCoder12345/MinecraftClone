@@ -31,7 +31,7 @@ void CameraSystem::updateCamVectors(CameraMove& cm, Transform& t) {
 
 void CameraSystem::onUpdate() {
 	Input& input = Game::instance().getInput();
-	if (input.isKeyPressed(GLFW_KEY_ESCAPE)) {
+	if (input.getControlValue("close")) {
 		Game::instance().close();
 	}
 	Time& time = Game::instance().getTime();
@@ -41,14 +41,15 @@ void CameraSystem::onUpdate() {
 
 		float velocity = cm.speed;
 
-		float forwardVal = input.getControlValue("forward");
+		float forwardVal = -input.getControlValue("forward");
 		float sideVal = input.getControlValue("side");
-
-		
-		
 
 		cm.pos += cm.front * velocity * forwardVal;
 		cm.pos += cm.right * velocity * sideVal;
+
+		if (input.getControlValue("up")) {
+			cm.pos.y += cm.upSpeed;
+		}
 
 		glm::vec2 mpos = input.getMousePos();
 
