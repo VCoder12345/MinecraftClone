@@ -11,14 +11,16 @@
 #include <input/Controls.h>
 #include <camera/CameraMove.h>
 #include <camera/CameraSystem.h>
+#include <block/BlockInstanceRenderer.h>
 #include <block/BlockRenderer.h>
 #include <block/Block.h>
 
 void ProbeScene::prepare() {
 	ResourceManager& rm = Game::instance().getResourceManager();
 
-	Shader cubeShader = rm.loadShader("cubeShader", "assets/shaders/cubeShader.vert", "assets/shaders/cubeShader.frag");
-	Shader blockShader = rm.loadShader("blockShader", "assets/shaders/blockInstanceShader.vert", "assets/shaders/blockInstanceShader.frag");
+	//Shader cubeShader = rm.loadShader("cubeShader", "assets/shaders/cubeShader.vert", "assets/shaders/cubeShader.frag");
+	//Shader blockInstaceShader = rm.loadShader("blockInstaceShader", "assets/shaders/blockInstanceShader.vert", "assets/shaders/blockInstanceShader.frag");
+	Shader blockShader = rm.loadShader("blockShader", "assets/shaders/blockShader.vert", "assets/shaders/blockShader.frag");
 	Texture dirtTex = rm.loadTexture("dirt", "assets/sprites/block/dirt.png", true, true);
 	Texture sandstoneTex = rm.loadTexture("sandstone", "assets/sprites/block/sandstone.png", true, true);
 
@@ -48,30 +50,32 @@ void ProbeScene::prepare() {
 	closeControl->addControl(new KeyControl(GLFW_KEY_ESCAPE));
 	input.addControl(closeControl, "close");
 
+	for (int h = 0; h < 3; ++h) {
+		for (int i = 0; i < 30; ++i) {
+			for (int j = 0; j < 30; ++j) {
+				Entity* cube1 = new Entity("Cube1");
+				glm::mat4 cmodel1(1.0f);
 
-	for (int i = 0; i < 30; ++i) {
-		for (int j = 0; j < 30; ++j) {
-			Entity* cube1 = new Entity("Cube1");
-			glm::mat4 cmodel1(1.0f);
+				float x = -i;
+				float y = -j;
+				cmodel1 = glm::translate(cmodel1, glm::vec3(-i, h, -j));
 
-			float x = -i;
-			float y = -j;
-			cmodel1 = glm::translate(cmodel1, glm::vec3(-i, 0.0f, -j));
+				cube1->addComponent(new Transform(cmodel1));
 
-			cube1->addComponent(new Transform(cmodel1));
+				if (i % 2 == j % 2 && i % 2 == h % 2) {
+					cube1->addComponent(new Block(sandstoneTex));
+				}
+				else {
+					cube1->addComponent(new Block(dirtTex));
+				}
 
-			if (i % 2 == 0) {
-				cube1->addComponent(new Block(sandstoneTex));
+				//cube1->addComponent(new CubeRenderComponent(playerTex, glm::vec3(1.0f)));
+
+				addEntity(cube1);
 			}
-			else {
-				cube1->addComponent(new Block(dirtTex));
-			}
-			
-			//cube1->addComponent(new CubeRenderComponent(playerTex, glm::vec3(1.0f)));
-
-			addEntity(cube1);
 		}
 	}
+	
 
 	
 
@@ -81,8 +85,9 @@ void ProbeScene::prepare() {
 	addEntity(camera);
 
 	addSystem(new CameraSystem());
+	//addSystem(new BlockInstanceRenderer(blockInstaceShader));
 	addSystem(new BlockRenderer(blockShader));
-	//addSystem(new CubeRenderer(cubeShader));
+	
 }
 
 Entity& ProbeScene::getCamera() {

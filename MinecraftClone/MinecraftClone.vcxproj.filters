@@ -60,10 +60,13 @@
     <ClCompile Include="src\camera\CameraSystem.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="src\block\BlockRenderer.cpp">
+    <ClCompile Include="src\block\BlockInstanceRenderer.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="src\utils\Transform.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="src\block\BlockRenderer.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
@@ -161,6 +164,9 @@
     <ClInclude Include="src\block\Block.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="src\block\BlockInstanceRenderer.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
     <ClInclude Include="src\block\BlockRenderer.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -170,5 +176,7 @@
     <None Include="assets\shaders\cubeShader.frag" />
     <None Include="assets\shaders\blockInstanceShader.vert" />
     <None Include="assets\shaders\blockInstanceShader.frag" />
+    <None Include="assets\shaders\blockShader.vert" />
+    <None Include="assets\shaders\blockShader.frag" />
   </ItemGroup>
 </Project>

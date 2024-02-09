@@ -135,6 +135,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\block\BlockRenderer.cpp" />
+    <ClCompile Include="src\block\BlockInstanceRenderer.cpp" />
     <ClCompile Include="src\camera\CameraSystem.cpp" />
     <ClCompile Include="src\render\CubeRenderer.cpp" />
     <ClCompile Include="src\ecs\Entity.cpp" />
@@ -153,8 +154,9 @@
     <ClCompile Include="src\window\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\block\Block.h" />
     <ClInclude Include="src\block\BlockRenderer.h" />
+    <ClInclude Include="src\block\Block.h" />
+    <ClInclude Include="src\block\BlockInstanceRenderer.h" />
     <ClInclude Include="src\camera\CameraSystem.h" />
     <ClInclude Include="src\camera\CameraMove.h" />
     <ClInclude Include="src\block\BlockGrid.h" />
@@ -191,6 +193,8 @@
     <None Include="assets\shaders\blockInstanceShader.vert">
       <FileType>Text</FileType>
     </None>
+    <None Include="assets\shaders\blockShader.frag" />
+    <None Include="assets\shaders\blockShader.vert" />
     <None Include="assets\shaders\cubeShader.frag" />
     <None Include="assets\shaders\cubeShader.vert" />
   </ItemGroup>

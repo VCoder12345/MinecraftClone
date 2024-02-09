@@ -7,5 +7,5 @@ class Block : public Component {
 public:
 	Texture texture;
 
-	Block(Texture texture) : texture(texture) {}
+	Block(Texture texture) : texture(texture){}
 };

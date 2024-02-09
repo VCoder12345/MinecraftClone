@@ -2,11 +2,11 @@
 
 #include <render/Renderer.h>
 
-class BlockRenderer :
-	public Renderer
+class BlockInstanceRenderer :
+    public Renderer
 {
 public:
-	BlockRenderer(Shader shader);
+	BlockInstanceRenderer(Shader shader);
 	void init();
 
 	void onRender() override;
