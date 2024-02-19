@@ -72,12 +72,12 @@ void Chunk::genMesh(bool quadCulling) {
 				//back
 				if (!quadCulling || j == 0 || isBlockEmpty(i, j - 1, k)) {
 					allVertices.insert(allVertices.end(), {
-						lx, ly, lz,  0.0f, 1.0f, bl->material->texIndexBack, BACK_FACE,
-						rx, ly, lz,  1.0f, 1.0f, bl->material->texIndexBack, BACK_FACE,
-						rx, ry, lz,  1.0f, 0.0f, bl->material->texIndexBack, BACK_FACE,
-						rx, ry, lz,  1.0f, 0.0f, bl->material->texIndexBack, BACK_FACE,
-						lx, ry, lz,  0.0f, 0.0f, bl->material->texIndexBack, BACK_FACE,
-						lx, ly, lz,  0.0f, 1.0f, bl->material->texIndexBack, BACK_FACE
+						lx, ly, lz,  0.0f, 1.0f, bl->material->texIndexBack, backFaceIntensity,
+						rx, ly, lz,  1.0f, 1.0f, bl->material->texIndexBack, backFaceIntensity,
+						rx, ry, lz,  1.0f, 0.0f, bl->material->texIndexBack, backFaceIntensity,
+						rx, ry, lz,  1.0f, 0.0f, bl->material->texIndexBack, backFaceIntensity,
+						lx, ry, lz,  0.0f, 0.0f, bl->material->texIndexBack, backFaceIntensity,
+						lx, ly, lz,  0.0f, 1.0f, bl->material->texIndexBack, backFaceIntensity
 					});
 				}
 				
@@ -85,12 +85,12 @@ void Chunk::genMesh(bool quadCulling) {
 				//front
 				if (!quadCulling || j == size - 1 || isBlockEmpty(i, j + 1, k)) {
 					allVertices.insert(allVertices.end(), {
-						lx, ly, rz, 0.0f, 1.0f, bl->material->texIndexFront, FRONT_FACE,
-						rx, ly, rz, 1.0f, 1.0f, bl->material->texIndexFront, FRONT_FACE,
-						rx, ry, rz, 1.0f, 0.0f, bl->material->texIndexFront, FRONT_FACE,
-						rx, ry, rz, 1.0f, 0.0f, bl->material->texIndexFront, FRONT_FACE,
-						lx, ry, rz, 0.0f, 0.0f, bl->material->texIndexFront, FRONT_FACE,
-						lx, ly, rz, 0.0f, 1.0f, bl->material->texIndexFront, FRONT_FACE 
+						lx, ly, rz, 0.0f, 1.0f, bl->material->texIndexFront, frontFaceIntensity,
+						rx, ly, rz, 1.0f, 1.0f, bl->material->texIndexFront, frontFaceIntensity,
+						rx, ry, rz, 1.0f, 0.0f, bl->material->texIndexFront, frontFaceIntensity,
+						rx, ry, rz, 1.0f, 0.0f, bl->material->texIndexFront, frontFaceIntensity,
+						lx, ry, rz, 0.0f, 0.0f, bl->material->texIndexFront, frontFaceIntensity,
+						lx, ly, rz, 0.0f, 1.0f, bl->material->texIndexFront, frontFaceIntensity 
 					});
 				}
 
@@ -98,12 +98,12 @@ void Chunk::genMesh(bool quadCulling) {
 				//left
 				if (!quadCulling || i == 0 || isBlockEmpty(i - 1, j, k)) {
 					allVertices.insert(allVertices.end(), {
-						lx, ry, rz,  0.0f, 0.0f, bl->material->texIndexLeft, LEFT_FACE,
-						lx, ry, lz,  1.0f, 0.0f, bl->material->texIndexLeft, LEFT_FACE,
-						lx, ly, lz,  1.0f, 1.0f, bl->material->texIndexLeft, LEFT_FACE,
-						lx, ly, lz,  1.0f, 1.0f, bl->material->texIndexLeft, LEFT_FACE,
-						lx, ly, rz,  0.0f, 1.0f, bl->material->texIndexLeft, LEFT_FACE,
-						lx, ry, rz,  0.0f, 0.0f, bl->material->texIndexLeft, LEFT_FACE
+						lx, ry, rz,  0.0f, 0.0f, bl->material->texIndexLeft, leftFaceIntensity,
+						lx, ry, lz,  1.0f, 0.0f, bl->material->texIndexLeft, leftFaceIntensity,
+						lx, ly, lz,  1.0f, 1.0f, bl->material->texIndexLeft, leftFaceIntensity,
+						lx, ly, lz,  1.0f, 1.0f, bl->material->texIndexLeft, leftFaceIntensity,
+						lx, ly, rz,  0.0f, 1.0f, bl->material->texIndexLeft, leftFaceIntensity,
+						lx, ry, rz,  0.0f, 0.0f, bl->material->texIndexLeft, leftFaceIntensity
 					});
 				}
 				
@@ -111,12 +111,12 @@ void Chunk::genMesh(bool quadCulling) {
 				//right
 				if (!quadCulling || i == size - 1 || isBlockEmpty(i + 1, j, k)) {
 					allVertices.insert(allVertices.end(), {
-						rx, ry, rz,  0.0f, 0.0f, bl->material->texIndexRight, RIGHT_FACE,
-						rx, ry, lz,  1.0f, 0.0f, bl->material->texIndexRight, RIGHT_FACE,
-						rx, ly, lz,  1.0f, 1.0f, bl->material->texIndexRight, RIGHT_FACE,
-						rx, ly, lz,  1.0f, 1.0f, bl->material->texIndexRight, RIGHT_FACE,
-						rx, ly, rz,  0.0f, 1.0f, bl->material->texIndexRight, RIGHT_FACE,
-						rx, ry, rz,  0.0f, 0.0f, bl->material->texIndexRight, RIGHT_FACE
+						rx, ry, rz,  0.0f, 0.0f, bl->material->texIndexRight, rightFaceIntensity,
+						rx, ry, lz,  1.0f, 0.0f, bl->material->texIndexRight, rightFaceIntensity,
+						rx, ly, lz,  1.0f, 1.0f, bl->material->texIndexRight, rightFaceIntensity,
+						rx, ly, lz,  1.0f, 1.0f, bl->material->texIndexRight, rightFaceIntensity,
+						rx, ly, rz,  0.0f, 1.0f, bl->material->texIndexRight, rightFaceIntensity,
+						rx, ry, rz,  0.0f, 0.0f, bl->material->texIndexRight, rightFaceIntensity
 					});
 				}
 				
@@ -124,12 +124,12 @@ void Chunk::genMesh(bool quadCulling) {
 				//bottom
 				if (!quadCulling || k == 0 || isBlockEmpty(i, j, k - 1)) {
 					allVertices.insert(allVertices.end(), {
-						lx, ly, lz,  0.0f, 1.0f, bl->material->texIndexBottom, BOTTOM_FACE,
-						rx, ly, lz,  1.0f, 1.0f, bl->material->texIndexBottom, BOTTOM_FACE,
-						rx, ly, rz,  1.0f, 0.0f, bl->material->texIndexBottom, BOTTOM_FACE,
-						rx, ly, rz,  1.0f, 0.0f, bl->material->texIndexBottom, BOTTOM_FACE,
-						lx, ly, rz,  0.0f, 0.0f, bl->material->texIndexBottom, BOTTOM_FACE,
-						lx, ly, lz,  0.0f, 1.0f, bl->material->texIndexBottom, BOTTOM_FACE
+						lx, ly, lz,  0.0f, 1.0f, bl->material->texIndexBottom, bottomFaceIntensity,
+						rx, ly, lz,  1.0f, 1.0f, bl->material->texIndexBottom, bottomFaceIntensity,
+						rx, ly, rz,  1.0f, 0.0f, bl->material->texIndexBottom, bottomFaceIntensity,
+						rx, ly, rz,  1.0f, 0.0f, bl->material->texIndexBottom, bottomFaceIntensity,
+						lx, ly, rz,  0.0f, 0.0f, bl->material->texIndexBottom, bottomFaceIntensity,
+						lx, ly, lz,  0.0f, 1.0f, bl->material->texIndexBottom, bottomFaceIntensity
 					});
 				}
 				
@@ -137,12 +137,12 @@ void Chunk::genMesh(bool quadCulling) {
 				//top
 				if (!quadCulling || k == size - 1 || isBlockEmpty(i, j, k + 1)) {
 					allVertices.insert(allVertices.end(), {
-						lx, ry, lz,  0.0f, 1.0f, bl->material->texIndexTop, TOP_FACE,
-						rx, ry, lz,  1.0f, 1.0f, bl->material->texIndexTop,	TOP_FACE,
-						rx, ry, rz,  1.0f, 0.0f, bl->material->texIndexTop,	TOP_FACE,
-						rx, ry, rz,  1.0f, 0.0f, bl->material->texIndexTop,	TOP_FACE,
-						lx, ry, rz,  0.0f, 0.0f, bl->material->texIndexTop,	TOP_FACE,
-						lx, ry, lz,  0.0f, 1.0f, bl->material->texIndexTop,	TOP_FACE
+						lx, ry, lz,  0.0f, 1.0f, bl->material->texIndexTop, topFaceIntensity,
+						rx, ry, lz,  1.0f, 1.0f, bl->material->texIndexTop,	topFaceIntensity,
+						rx, ry, rz,  1.0f, 0.0f, bl->material->texIndexTop,	topFaceIntensity,
+						rx, ry, rz,  1.0f, 0.0f, bl->material->texIndexTop,	topFaceIntensity,
+						lx, ry, rz,  0.0f, 0.0f, bl->material->texIndexTop,	topFaceIntensity,
+						lx, ry, lz,  0.0f, 1.0f, bl->material->texIndexTop,	topFaceIntensity
 					});
 				}
 			}

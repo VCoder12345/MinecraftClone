@@ -26,6 +26,12 @@ public:
 	BlockMesh mesh;
 	BlockFactory* blFactory;
 	int numBlocks = 0;
+	const float topFaceIntensity = 1.0f;
+	const float bottomFaceIntensity = 0.5f;
+	const float frontFaceIntensity = 0.8f;
+	const float backFaceIntensity = 0.8f;
+	const float leftFaceIntensity = 0.6f;
+	const float rightFaceIntensity = 0.6f;
 
 
 	Chunk(const int size, BlockFactory* blFactory) : size(size), totalNumBlocks(size * size * size), blFactory(blFactory) {

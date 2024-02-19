@@ -4,7 +4,7 @@ out vec4 FragColor;
 in vec2 TexCoord;
 in float TexIndex;
 in vec3 mvVertexPos;
-in float Face;
+in float Intensity;
 
 struct Fog 
 {
@@ -32,6 +32,7 @@ void main()
 {
 	int texIndex = int(round(TexIndex));
 	FragColor = texture(textures[texIndex], TexCoord);
+	FragColor = vec4(FragColor.xyz * Intensity, FragColor.w);
 
 	if(fog.isActive == 1) 
 	{

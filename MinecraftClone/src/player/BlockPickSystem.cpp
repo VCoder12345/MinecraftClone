@@ -233,7 +233,7 @@ void BlockPickSystem::onMouseEvent(MouseEvent* ev) {
 
 			if (!info.outOfBounds) {
 				Chunk* chunk = world.chunks[info.chunk];
-				chunk->setBlock(MAT_DIRT, info.i, info.j, info.k);
+				chunk->setBlock(MAT_STONE, info.i, info.j, info.k);
 				chunk->genMesh(world.quadCulling);
 			}
 

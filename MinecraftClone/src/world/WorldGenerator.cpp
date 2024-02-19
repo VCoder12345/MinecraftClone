@@ -11,7 +11,7 @@ void WorldGenerator::initChunk(Chunk* chunk, int i, int j) {
 			//std::cout << r << std::endl;
 			int h = (int)(r * 16);
 			for (int z = 0; z < h; ++z) {
-				chunk->setBlock(MAT_STONE, x, y, z);
+				chunk->setBlock(MAT_DIRT, x, y, z);
 			}
 		}
 	}
