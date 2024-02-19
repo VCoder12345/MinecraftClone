@@ -36,5 +36,6 @@ public:
     void setMat3(const std::string& name, const glm::mat3& mat) const;
     // ------------------------------------------------------------------------
     void setMat4(const std::string& name, const glm::mat4& mat) const;
-
+    
+    void setIntAr(const std::string& name, int* ar, int size) const;
 };

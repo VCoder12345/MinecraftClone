@@ -12,6 +12,7 @@ public:
 	Texture();
 	void generate(unsigned int width, unsigned int height, unsigned char* data);
 	void bind() const;
+	void bindUnit(int i) const;
 	
 	float getWidthToHeightRatio();
 	float getHeightToWidthRatio();

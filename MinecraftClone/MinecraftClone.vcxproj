@@ -73,8 +73,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)bin\$(Platform)\$(Configuration)</OutDir>
     <IntDir>$(SolutionDir)tmp\$(Platform)\$(Configuration)</IntDir>
-    <IncludePath>src;D:\Coding\c++\visual-studio\vs22\external\include;$(IncludePath)</IncludePath>
-    <LibraryPath>D:\Coding\c++\visual-studio\vs22\external\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>src;..\..\external\include;$(IncludePath)</IncludePath>
+    <LibraryPath>..\..\external\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -134,8 +134,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\perlin\PerlinNoise.cpp" />
+    <ClCompile Include="src\globals\Globals.cpp" />
+    <ClCompile Include="src\player\BlockPickSystem.cpp" />
+    <ClCompile Include="src\block\BlockFactory.cpp" />
+    <ClCompile Include="src\world\Chunk.cpp" />
     <ClCompile Include="src\block\BlockRenderer.cpp" />
-    <ClCompile Include="src\block\BlockInstanceRenderer.cpp" />
     <ClCompile Include="src\camera\CameraSystem.cpp" />
     <ClCompile Include="src\render\CubeRenderer.cpp" />
     <ClCompile Include="src\ecs\Entity.cpp" />
@@ -152,14 +156,22 @@
     <ClCompile Include="src\scene\Scene.cpp" />
     <ClCompile Include="src\utils\Transform.cpp" />
     <ClCompile Include="src\window\Window.cpp" />
+    <ClCompile Include="src\world\World.cpp" />
+    <ClCompile Include="src\world\WorldGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\input\MouseEvent.h" />
+    <ClInclude Include="src\perlin\PerlinNoise.h" />
+    <ClInclude Include="src\globals\Globals.h" />
+    <ClInclude Include="src\player\BlockPickSystem.h" />
+    <ClInclude Include="src\block\BlockFactory.h" />
     <ClInclude Include="src\block\BlockRenderer.h" />
     <ClInclude Include="src\block\Block.h" />
-    <ClInclude Include="src\block\BlockInstanceRenderer.h" />
+    <ClInclude Include="src\block\Material.h" />
     <ClInclude Include="src\camera\CameraSystem.h" />
     <ClInclude Include="src\camera\CameraMove.h" />
-    <ClInclude Include="src\block\BlockGrid.h" />
+    <ClInclude Include="src\player\BlockPicker.h" />
+    <ClInclude Include="src\world\Chunk.h" />
     <ClInclude Include="src\render\CubeRenderComponent.h" />
     <ClInclude Include="src\render\CubeRenderer.h" />
     <ClInclude Include="src\animation\Animation.h" />
@@ -187,6 +199,8 @@
     <ClInclude Include="src\time\Time.h" />
     <ClInclude Include="src\utils\Transform.h" />
     <ClInclude Include="src\window\Window.h" />
+    <ClInclude Include="src\world\World.h" />
+    <ClInclude Include="src\world\WorldGenerator.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\shaders\blockInstanceShader.frag" />
@@ -197,6 +211,8 @@
     <None Include="assets\shaders\blockShader.vert" />
     <None Include="assets\shaders\cubeShader.frag" />
     <None Include="assets\shaders\cubeShader.vert" />
+    <None Include="assets\shaders\slcShader.frag" />
+    <None Include="assets\shaders\slcShader.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

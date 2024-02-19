@@ -1,9 +1,11 @@
 #include "Input.h"
 
 #include <game/Game.h>
+#include <event/EventBus.h>
+#include "MouseEvent.h"
 
 Input::Input(GLFWwindow* window) : window(window) {
-	
+	glfwSetMouseButtonCallback(window, Input::mouse_btn_callback);
 }
 
 Input::~Input() {
@@ -21,6 +23,15 @@ glm::vec2 Input::getMousePos() {
 bool Input::isKeyPressed(int key) {
 	int state = glfwGetKey(window, key);
 	return state == GLFW_PRESS;
+}
+
+bool Input::isMouseBtnPressed(int btn) {
+	int state = glfwGetMouseButton(window, btn);
+	return state == GLFW_PRESS;
+}
+
+void Input::mouse_btn_callback(GLFWwindow* window, int button, int action, int mods) {
+	Game::instance().getEventSystem().publish(new MouseEvent(button, action, mods));
 }
 
 const float* Input::getJAxes() {

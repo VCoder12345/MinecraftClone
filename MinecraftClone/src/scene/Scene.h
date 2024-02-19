@@ -31,7 +31,7 @@ public:
 
 	void onRender();
 
-	//to be overriden by different scene-classes; here the entities and systems get instantiated
+	//to be overwritten by different scene-classes; here the entities and systems get instantiated
 	virtual void prepare() = 0;
 	virtual Entity& getCamera() = 0;
 

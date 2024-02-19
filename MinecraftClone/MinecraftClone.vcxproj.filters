@@ -60,13 +60,31 @@
     <ClCompile Include="src\camera\CameraSystem.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="src\block\BlockInstanceRenderer.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="src\utils\Transform.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="src\block\BlockRenderer.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="src\world\Chunk.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="src\world\World.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="src\block\BlockFactory.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="src\player\BlockPickSystem.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="src\globals\Globals.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="src\perlin\PerlinNoise.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="src\world\WorldGenerator.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
@@ -158,16 +176,40 @@
     <ClInclude Include="src\camera\CameraSystem.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="src\block\BlockGrid.h">
+    <ClInclude Include="src\world\Chunk.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="src\block\Block.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="src\block\BlockInstanceRenderer.h">
+    <ClInclude Include="src\block\BlockRenderer.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="src\block\BlockRenderer.h">
+    <ClInclude Include="src\block\Material.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="src\world\World.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="src\block\BlockFactory.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="src\player\BlockPicker.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="src\player\BlockPickSystem.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="src\globals\Globals.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="src\perlin\PerlinNoise.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="src\world\WorldGenerator.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="src\input\MouseEvent.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
@@ -178,5 +220,7 @@
     <None Include="assets\shaders\blockInstanceShader.frag" />
     <None Include="assets\shaders\blockShader.vert" />
     <None Include="assets\shaders\blockShader.frag" />
+    <None Include="assets\shaders\slcShader.vert" />
+    <None Include="assets\shaders\slcShader.frag" />
   </ItemGroup>
 </Project>

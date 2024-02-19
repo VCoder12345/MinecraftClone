@@ -4,6 +4,7 @@
 
 class ProbeScene : public Scene {
 public:
+	~ProbeScene();
 	Entity* camera;
 
 	void prepare();

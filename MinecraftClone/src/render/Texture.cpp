@@ -31,6 +31,11 @@ void Texture::bind() const
 	glBindTexture(GL_TEXTURE_2D, id);
 }
 
+void Texture::bindUnit(int i) const {
+	glActiveTexture(GL_TEXTURE0 + i);
+	bind();
+}
+
 float Texture::getWidthToHeightRatio() {
 	return (float)width / (float)height;
 }

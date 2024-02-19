@@ -21,6 +21,9 @@ public:
 	glm::vec2 getMousePos();
 	bool isKeyPressed(int key);
 
+	bool isMouseBtnPressed(int btn);
+	static void mouse_btn_callback(GLFWwindow* window, int button, int action, int mods);
+
 	const float* getJAxes();
 	const float getJAxis(int axis);
 	const float getCutJAxis(int axis);

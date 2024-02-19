@@ -14,6 +14,8 @@
 
 class Game {
 public:
+	bool fpsDisplay = true;
+
 	//singleton function
 	static Game& instance() {
 		static Game* instance = new Game();
@@ -27,6 +29,8 @@ public:
 	Log& getLog() {
 		return *log;
 	}
+
+
 
 	ResourceManager& getResourceManager() {
 		return *resourceManager;
@@ -74,7 +78,7 @@ private:
 	EventBus* eventBus;
 	Input* input;
 
-	bool fpsDisplay = true;
+
 
 	Scene* currentScene;
 	std::map<unsigned int, Scene*> scenes;
