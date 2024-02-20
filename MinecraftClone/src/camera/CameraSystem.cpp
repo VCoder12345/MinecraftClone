@@ -52,6 +52,9 @@ void CameraSystem::onUpdate() {
 		if (input.getControlValue("up")) {
 			cm.pos.y += cm.upSpeed;
 		}
+		else if (input.getControlValue("down")) {
+			cm.pos.y -= cm.upSpeed;
+		}
 
 		glm::vec2 mpos = input.getMousePos();
 
@@ -73,18 +76,21 @@ void CameraSystem::onUpdate() {
 		cm.moldPos = mpos;
 
 		int x = (int)cm.pos.x;
+		int y = (int)cm.pos.y;
 		int z = (int)cm.pos.z;
 	
 		if (x >= world.chunkSize) {
 			//std::cout << "left shift" << std::endl;
 			//shift window to the left
-			for (int i = 0; i < world.chunkStoreSize; ++i) {
-				for (int j = 0; j < world.chunkStoreSize; ++j) {
-					if (i == world.chunkStoreSize - 1) {
-						world.setChunk(i, j, world.createChunk(i, j));
-					}
-					else {
-						world.setChunk(i, j, world.getChunk(i + 1, j));
+			for (int i = 0; i < world.chunkStoreSizeHor; ++i) {
+				for (int j = 0; j < world.chunkStoreSizeHor; ++j) {
+					for (int k = 0; k < world.chunkStoreSizeVer; ++k) {
+						if (i == world.chunkStoreSizeHor - 1) {
+							world.setChunk(i, j, k, world.createChunk(i, j, k));
+						}
+						else {
+							world.setChunk(i, j, k,  world.getChunk(i + 1, j, k));
+						}
 					}
 				}
 			}
@@ -94,13 +100,15 @@ void CameraSystem::onUpdate() {
 		else if (x < 0) {
 			//std::cout << "right shift" << std::endl;
 			//shift window to the right
-			for (int i = world.chunkStoreSize - 1; i >= 0; --i) {
-				for (int j = 0; j < world.chunkStoreSize; ++j) {
-					if (i == 0) {
-						world.setChunk(i, j, world.createChunk(i, j));
-					}
-					else {
-						world.setChunk(i, j, world.getChunk(i - 1, j));
+			for (int i = world.chunkStoreSizeHor - 1; i >= 0; --i) {
+				for (int j = 0; j < world.chunkStoreSizeHor; ++j) {
+					for (int k = 0; k < world.chunkStoreSizeVer; ++k) {
+						if (i == 0) {
+							world.setChunk(i, j, k, world.createChunk(i, j, k));
+						}
+						else {
+							world.setChunk(i, j, k, world.getChunk(i - 1, j, k));
+						}
 					}
 				}
 			}
@@ -109,35 +117,78 @@ void CameraSystem::onUpdate() {
 		}
 
 		if (z >= world.chunkSize) {
-			//std::cout << "front shift" << std::endl;
-			for (int j = 0; j < world.chunkStoreSize; ++j) {
-				for (int i = 0; i < world.chunkStoreSize; ++i) {
-					if (j == world.chunkStoreSize - 1) {
-						world.setChunk(i, j, world.createChunk(i, j));
-					}
-					else {
-						world.setChunk(i, j, world.getChunk(i, j + 1));
+			//std::cout << "left shift" << std::endl;
+			//shift window to the left
+			for (int i = 0; i < world.chunkStoreSizeHor; ++i) {
+				for (int j = 0; j < world.chunkStoreSizeHor; ++j) {
+					for (int k = 0; k < world.chunkStoreSizeVer; ++k) {
+						if (j == world.chunkStoreSizeHor - 1) {
+							world.setChunk(i, j, k, world.createChunk(i, j, k));
+						}
+						else {
+							world.setChunk(i, j, k, world.getChunk(i, j + 1, k));
+						}
 					}
 				}
 			}
-			
-			world.shifty++;
+			world.shiftz++;
 			cm.pos.z -= world.chunkSize;
 		}
 		else if (z < 0) {
-			//std::cout << "back shift" << std::endl;
-			for (int j = world.chunkStoreSize - 1; j >= 0; --j) {
-				for (int i = 0; i < world.chunkStoreSize; ++i) {
-					if (j == 0) {
-						world.setChunk(i, j, world.createChunk(i, j));
-					}
-					else {
-						world.setChunk(i, j, world.getChunk(i, j - 1));
+			//std::cout << "right shift" << std::endl;
+			//shift window to the right
+			for (int i = 0; i < world.chunkStoreSizeHor; ++i) {
+				for (int j = world.chunkStoreSizeHor - 1; j >= 0; --j) {
+					for (int k = 0; k < world.chunkStoreSizeVer; ++k) {
+						if (j == 0) {
+							world.setChunk(i, j, k, world.createChunk(i, j, k));
+						}
+						else {
+							world.setChunk(i, j, k, world.getChunk(i, j - 1, k));
+						}
 					}
 				}
 			}
-			world.shifty++;
+			world.shiftz++;
 			cm.pos.z += world.chunkSize;
+		}
+		
+		if (y >= world.chunkSize) {
+			//std::cout << "left shift" << std::endl;
+			//shift window to the left
+			for (int i = 0; i < world.chunkStoreSizeHor; ++i) {
+				for (int j = 0; j < world.chunkStoreSizeHor; ++j) {
+					for (int k = 0; k < world.chunkStoreSizeVer; ++k) {
+						if (k == world.chunkStoreSizeHor - 1) {
+							world.setChunk(i, j, k, world.createChunk(i, j, k));
+						}
+						else {
+							world.setChunk(i, j, k, world.getChunk(i, j, k + 1));
+						}
+					}
+				}
+			}
+
+			world.yOffset++;
+			cm.pos.y -= world.chunkSize;
+		}
+		else if (y < 0) {
+			//std::cout << "right shift" << std::endl;
+			//shift window to the right
+			for (int i = 0; i < world.chunkStoreSizeHor; ++i) {
+				for (int j = 0; j < world.chunkStoreSizeHor; ++j) {
+					for (int k = world.chunkStoreSizeVer - 1; k >= 0; --k) {
+						if (k == 0) {
+							world.setChunk(i, j, k, world.createChunk(i, j, k));
+						}
+						else {
+							world.setChunk(i, j, k, world.getChunk(i, j, k - 1));
+						}
+					}
+				}
+			}
+			world.yOffset--;
+			cm.pos.y += world.chunkSize;
 		}
 
 		//std::cout << cm.pos.x << " " << cm.pos.z << std::endl;

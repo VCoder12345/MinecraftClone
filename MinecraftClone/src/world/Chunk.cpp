@@ -38,6 +38,8 @@ void Chunk::setBlock(int type, int i, int j, int k) {
 	if (blocks[index] == nullptr) {
 		++numBlocks;
 	}
+	
+	
 
 	blocks[index] = blFactory->createBlock(type);
 	//Game::instance().getCurrentScene().addEntity(blocks[index]);

@@ -7,7 +7,7 @@ class WorldGenerator
 {
 public:
 	WorldGenerator();
-	void initChunk(Chunk* chunk, int i, int j);
+	void initChunk(Chunk* chunk, int i, int j, int g);
 
 private:
 	PerlinNoise perlin;

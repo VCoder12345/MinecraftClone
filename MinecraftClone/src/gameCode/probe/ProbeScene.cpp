@@ -49,19 +49,23 @@ void ProbeScene::prepare() {
 	upControl->addControl(new KeyControl(GLFW_KEY_SPACE));
 	input.addControl(upControl, "up");
 
+	GroupControl* downControl = new GroupControl();
+	downControl->addControl(new KeyControl(GLFW_KEY_LEFT_SHIFT));
+	input.addControl(downControl, "down");
+
 	GroupControl* closeControl = new GroupControl();
 	closeControl->addControl(new JButtonControl(JOYSTICK_START));
 	closeControl->addControl(new KeyControl(GLFW_KEY_ESCAPE));
 	input.addControl(closeControl, "close");
 
 	
-	World* world = new World(7, 3, 16);
+	World* world = new World(7, 7, 3, 3, 16);
 	Globals::provideWorld(world);
 
 	camera = new Entity("Camera");
 	camera->addComponent(new Transform(glm::mat4(1.0f)));
 	camera->addComponent(new CameraMove(glm::vec3(0, 0, 0)));
-	camera->addComponent(new BlockPicker(20));
+	camera->addComponent(new BlockPicker(2000));
 	addEntity(camera);
 
 	addSystem(new CameraSystem());

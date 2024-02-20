@@ -9,7 +9,7 @@
 
 int main() {
 	Game& game = Game::instance();
-	game.fpsDisplay = false;
+	//game.fpsDisplay = false;
 
 	game.addScene(new ProbeScene(), 1);
 

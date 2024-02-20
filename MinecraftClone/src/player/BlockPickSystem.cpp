@@ -25,12 +25,6 @@ void BlockPickSystem::onUpdate() {
 		int y = (int)(cm.pos.y);
 		int z = (int)(cm.pos.z);
 
-		if (y < 0) {
-			y = 0;
-		}
-		else if (y >= world.chunkSize) {
-			y = world.chunkSize - 1;
-		}
 
 
 		int stepx = 0, stepy = 0, stepz = 0;
@@ -110,7 +104,7 @@ void BlockPickSystem::onUpdate() {
 
 		//std::cout << "pos: " << cm.pos.x << " " << cm.pos.y << " " << cm.pos.z << std::endl;
 		int mode = 0;
-		while (distUsed <= bp.maxPickDist && y >= 0 && y < world.chunkSize) {
+		while (distUsed <= bp.maxPickDist) {
 			if (tMaxX < tMaxY) {
 				if (tMaxX < tMaxZ) {
 					x += stepx;
@@ -132,9 +126,7 @@ void BlockPickSystem::onUpdate() {
 					y += stepy;
 					tMaxY += tDeltay;
 					distUsed += abs(tDeltay);
-					if (y < 0 || y > 16) {
-						return;
-					}
+
 					mode = 1;
 				}
 				else {
@@ -233,6 +225,8 @@ void BlockPickSystem::onMouseEvent(MouseEvent* ev) {
 
 			if (!info.outOfBounds) {
 				Chunk* chunk = world.chunks[info.chunk];
+				/*Chunk* oChunk = world.chunks[world.slc.info.chunk];
+				Block* bl = oChunk->get(world.slc.info.i, world.slc.info.j, world.slc.info.k);*/
 				chunk->setBlock(MAT_STONE, info.i, info.j, info.k);
 				chunk->genMesh(world.quadCulling);
 			}

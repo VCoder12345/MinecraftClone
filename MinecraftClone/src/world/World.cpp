@@ -4,17 +4,20 @@ void World::init() {
 	//currentChunk->genMesh(quadCulling);
 }
 
-void World::setChunk(unsigned int i, unsigned int j, Chunk* chunk) {
-	chunks[chunkIndex(i, j)] = chunk;
+void World::setChunk(unsigned int i, unsigned int j, unsigned int k, Chunk* chunk) {
+	chunks[chunkIndex(i, j, k)] = chunk;
 }
 
-Chunk* World::getChunk(unsigned int i, unsigned int j) {
-	return chunks[chunkIndex(i, j)];
+Chunk* World::getChunk(unsigned int i, unsigned int j, unsigned int k) {
+	return chunks[chunkIndex(i, j, k)];
 }
 
-Chunk* World::createChunk(int i, int j) {
+Chunk* World::createChunk(int i, int j, int k) {
 	Chunk* chunk = new Chunk(chunkSize, blFactory);
-	worldGenerator.initChunk(chunk, i + shiftx, j + shifty);
+	int x = i + shiftx;
+	int y = j + shiftz;
+	int g = yOffset - chunkStoreSizeVer / 2 + k;
+	worldGenerator.initChunk(chunk, x, y, g);
 	chunk->genMesh(quadCulling);
 	return chunk;
 }
@@ -32,32 +35,38 @@ BlockInfo World::getBlockInfo(int i, int j, int k) {
 	int y = k;
 	int z = j;
 
-	if (y < 0 || y >= chunkSize) {
-		info.outOfBounds = true;
-		return info;
-	}
 
-	int middle = currentChunkIndex();
-	int cx = middle;
-	int cy = middle;
-	while (cx >= 0 && cx < chunkStoreSize && cy >= 0 && cy < chunkStoreSize) {
+	int midHor = middleHor();
+	int midVer = middleVer();
+	int cx = midHor;
+	int cz = midHor;
+	int cy = midVer;
+	while (cx >= 0 && cx < chunkStoreSizeHor && cz >= 0 && cz < chunkStoreSizeHor && cy >= 0 && cy < chunkStoreSizeVer) {
 		if (x < 0) {
 			x += chunkSize;
-			cx--;
+			--cx;
 		}
 		else if (x >= chunkSize) {
 			x -= chunkSize;
-			cx++;
+			++cx;
 		}else if (z < 0) {
 			z += chunkSize;
-			cy--;
+			--cz;
 		}
 		else if (z >= chunkSize) {
 			z -= chunkSize;
-			cy++;
+			++cz;
+		}
+		else if (y < 0) {
+			y += chunkSize;
+			--cy;
+		}
+		else if (y >= chunkSize) {
+			y -= chunkSize;
+			++cy;
 		}
 		else {
-			info.chunk = chunkIndex(cx, cy);
+			info.chunk = chunkIndex(cx, cz, cy);
 			info.i = x;
 			info.j = z;
 			info.k = y;

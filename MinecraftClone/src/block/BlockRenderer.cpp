@@ -95,16 +95,23 @@ void BlockRenderer::init() {
 void BlockRenderer::onRender() {
 	World& world = Globals::getWorld();
 	//double time = glfwGetTime();
-	int middle = world.currentChunkIndex();
-	for (int di = -world.chunkVisualDist; di <= world.chunkVisualDist; ++di) {
-		for (int dj = -world.chunkVisualDist; dj <= world.chunkVisualDist; ++dj) {
-			int i = di + middle;
-			int j = dj + middle;
+	int midHor = world.middleHor();
+	int midVer = world.middleVer();
+	for (int di = -world.chunkVisualDistHor; di <= world.chunkVisualDistHor; ++di) {
+		for (int dj = -world.chunkVisualDistHor; dj <= world.chunkVisualDistHor; ++dj) {
+			for (int dk = -world.chunkVisualDistVer; dk <= world.chunkVisualDistVer; ++dk) {
+				int i = di + midHor;
+				int j = dj + midHor;
+				int k = dk + midVer;
 
-			if (i >= world.chunkStoreSize || j >= world.chunkStoreSize || i < 0 || j < 0) continue;
-			BlockMesh& mesh = world.getChunk(i, j)->getMesh();
-			glm::vec3 offset = glm::vec3(di, 0, dj) * (float)world.chunkSize;
-			renderBlockMesh(mesh, offset);
+				if (i >= world.chunkStoreSizeHor
+					|| j >= world.chunkStoreSizeHor
+					|| k >= world.chunkStoreSizeVer
+					|| i < 0 || j < 0 || k < 0) continue;
+				BlockMesh& mesh = world.getChunk(i, j, k)->getMesh();
+				glm::vec3 offset = glm::vec3(di, dk, dj) * (float)world.chunkSize;
+				renderBlockMesh(mesh, offset);
+			}
 		}
 	}
 
