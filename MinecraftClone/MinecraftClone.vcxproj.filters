@@ -222,5 +222,6 @@
     <None Include="assets\shaders\blockShader.frag" />
     <None Include="assets\shaders\slcShader.vert" />
     <None Include="assets\shaders\slcShader.frag" />
+    <None Include="assets\shaders\debugCubeShader.vert" />
   </ItemGroup>
 </Project>

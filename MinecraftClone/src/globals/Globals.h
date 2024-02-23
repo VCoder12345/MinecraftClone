@@ -20,3 +20,5 @@ private:
 	static World* world;
 };
 
+std::ostream& operator<<(std::ostream& os, const glm::vec3& v);
+

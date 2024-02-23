@@ -7,8 +7,9 @@
 #include <utils/Transform.h>
 #include <tuple>
 #include <globals/Globals.h>
+#include <camera/CameraMove.h>
 
-BlockRenderer::BlockRenderer(Shader shader, Shader slcShader) : Renderer(shader), slcShader(slcShader) {
+BlockRenderer::BlockRenderer(Shader shader, Shader slcShader, Shader cubeShader) : Renderer(shader), slcShader(slcShader), cubeShader(cubeShader) {
 	init(); 
 }
 
@@ -90,11 +91,36 @@ void BlockRenderer::init() {
 
 	slcShader.use();
 	slcShader.setMat4("projection", projection);
+
+	cubeShader.use();
+	cubeShader.setMat4("projection", projection);
+	
+	Entity& cam = Game::instance().getCurrentScene().getCamera();
+	Transform& camT = cam.getComponent<Transform>();
+
+	glm::mat4 view = camT.model;
+
+	cubeShader.setMat4("view", view);
 }
 
 void BlockRenderer::onRender() {
 	World& world = Globals::getWorld();
-	//double time = glfwGetTime();
+	Entity& cam = Game::instance().getCurrentScene().getCamera();
+	Transform& camT = cam.getComponent<Transform>();
+
+	glm::mat4 view = camT.model;
+	glm::mat4 pv = projection * view;
+
+	shader.use();
+
+	auto& textures = world.textures();
+	for (int i = 0; i < textures.size(); ++i) {
+		textures[i].bindUnit(i);
+	}
+	shader.setMat4("view", view);
+
+	int cullCounter = 0;
+
 	int midHor = world.middleHor();
 	int midVer = world.middleVer();
 	for (int di = -world.chunkVisualDistHor; di <= world.chunkVisualDistHor; ++di) {
@@ -108,39 +134,49 @@ void BlockRenderer::onRender() {
 					|| j >= world.chunkStoreSizeHor
 					|| k >= world.chunkStoreSizeVer
 					|| i < 0 || j < 0 || k < 0) continue;
-				BlockMesh& mesh = world.getChunk(i, j, k)->getMesh();
+
 				glm::vec3 offset = glm::vec3(di, dk, dj) * (float)world.chunkSize;
-				renderBlockMesh(mesh, offset);
+				if (shouldRenderChunk(offset, pv)) {
+					BlockMesh& mesh = world.getChunk(i, j, k)->getMesh();
+					renderBlockMesh(mesh, offset);
+				}
+				else {
+					++cullCounter;
+				}
 			}
 		}
 	}
 
+	//std::cout << "culled: " << cullCounter << std::endl;
+
 	renderSlc();
-	/*double elapsed = glfwGetTime() - time;
-	std::cout << "render: " << elapsed << std::endl;*/
 }
 
 void BlockRenderer::renderBlockMesh(const BlockMesh& mesh, glm::vec3 offset) {
-	World& world = Globals::getWorld();
-	Entity& cam = Game::instance().getCurrentScene().getCamera();
-	Transform& camT = cam.getComponent<Transform>();
-
-	glm::mat4 view = camT.model;
-
 	shader.use();
 
-	auto& textures = world.textures();
-	for (int i = 0; i < textures.size(); ++i) {
-		textures[i].bindUnit(i);
-	}
-
 	shader.setVec3("offset", offset);
-	shader.setMat4("view", view);
 
 	glBindVertexArray(mesh.VAO);
 	glDrawArrays(GL_TRIANGLES, 0, mesh.numTriangles);
 	glBindVertexArray(0);
 }
+
+void BlockRenderer::renderCube(const glm::vec3& min, const glm::vec3& max) {
+	glLineWidth(5);
+
+	glm::mat4 model(1);
+	//model = glm::scale(model, max - min);
+	model = glm::translate(model, min);
+
+	cubeShader.use();
+	cubeShader.setMat4("model", model);
+
+	glBindVertexArray(slcVAO);
+	glDrawElements(GL_LINES, 24, GL_UNSIGNED_INT, 0);
+	glBindVertexArray(0);
+}
+
 
 void BlockRenderer::renderSlc() {
 	World& world = Globals::getWorld();
@@ -160,4 +196,54 @@ void BlockRenderer::renderSlc() {
 	glBindVertexArray(slcVAO);
 	glDrawElements(GL_LINES, 24, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
+}
+
+bool BlockRenderer::shouldRenderChunk(glm::vec3 offset, glm::mat4 pv) {
+	glm::vec3 min = offset;
+	glm::vec3 max = min + glm::vec3(16);
+	glm::vec3 mid = (max + min) * 0.5f;
+	glm::vec3 halfDiag = (max - min) * 0.5f;
+
+	//renderCube(min, max);
+
+	float la = pv[0][3] + pv[0][0];
+	float lb = pv[1][3] + pv[1][0];
+	float lc = pv[2][3] + pv[2][0];
+	float ld = pv[3][3] + pv[3][0];
+
+	float ra = pv[0][3] - pv[0][0];
+	float rb = pv[1][3] - pv[1][0];
+	float rc = pv[2][3] - pv[2][0];
+	float rd = pv[3][3] - pv[3][0];
+
+	float ba = pv[0][3] + pv[0][1];
+	float bb = pv[1][3] + pv[1][1];
+	float bc = pv[2][3] + pv[2][1];
+	float bd = pv[3][3] + pv[3][1];
+
+	float ta = pv[0][3] - pv[0][1];
+	float tb = pv[1][3] - pv[1][1];
+	float tc = pv[2][3] - pv[2][1];
+	float td = pv[3][3] - pv[3][1];
+
+	float na = pv[0][3] + pv[0][2];
+	float nb = pv[1][3] + pv[1][2];
+	float nc = pv[2][3] + pv[2][2];
+	float nd = pv[3][3] + pv[3][2];
+
+	return checkPlane(glm::vec3(la, lb, lc), ld, mid, halfDiag)
+		&& checkPlane(glm::vec3(ra, rb, rc), rd, mid, halfDiag)
+		&& checkPlane(glm::vec3(ba, bb, bc), bd, mid, halfDiag)
+		&& checkPlane(glm::vec3(ta, tb, tc), td, mid, halfDiag)
+		&& checkPlane(glm::vec3(na, nb, nc), nd, mid, halfDiag);
+}
+
+bool BlockRenderer::checkPlane(glm::vec3 normal, float d, const glm::vec3& mid, const glm::vec3& halfDiag) {
+	float len = normal.length();
+	normal /= -len;
+	d /= -len;
+	float r = halfDiag.x * abs(normal.x) + halfDiag.y * abs(normal.y) + halfDiag.z * abs(normal.z);
+	float s = glm::dot(normal, mid) + d;
+
+	return s <= r;
 }

@@ -211,6 +211,7 @@
     <None Include="assets\shaders\blockShader.vert" />
     <None Include="assets\shaders\cubeShader.frag" />
     <None Include="assets\shaders\cubeShader.vert" />
+    <None Include="assets\shaders\debugCubeShader.vert" />
     <None Include="assets\shaders\slcShader.frag" />
     <None Include="assets\shaders\slcShader.vert" />
   </ItemGroup>

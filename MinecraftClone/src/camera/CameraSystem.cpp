@@ -80,7 +80,7 @@ void CameraSystem::onUpdate() {
 		int z = (int)cm.pos.z;
 	
 		if (x >= world.chunkSize) {
-			//std::cout << "left shift" << std::endl;
+			std::cout << "left shift" << std::endl;
 			//shift window to the left
 			for (int i = 0; i < world.chunkStoreSizeHor; ++i) {
 				for (int j = 0; j < world.chunkStoreSizeHor; ++j) {
@@ -98,7 +98,7 @@ void CameraSystem::onUpdate() {
 			cm.pos.x -= world.chunkSize;
 		}
 		else if (x < 0) {
-			//std::cout << "right shift" << std::endl;
+			std::cout << "right shift" << std::endl;
 			//shift window to the right
 			for (int i = world.chunkStoreSizeHor - 1; i >= 0; --i) {
 				for (int j = 0; j < world.chunkStoreSizeHor; ++j) {
@@ -117,7 +117,7 @@ void CameraSystem::onUpdate() {
 		}
 
 		if (z >= world.chunkSize) {
-			//std::cout << "left shift" << std::endl;
+			std::cout << "back shift" << std::endl;
 			//shift window to the left
 			for (int i = 0; i < world.chunkStoreSizeHor; ++i) {
 				for (int j = 0; j < world.chunkStoreSizeHor; ++j) {
@@ -135,7 +135,7 @@ void CameraSystem::onUpdate() {
 			cm.pos.z -= world.chunkSize;
 		}
 		else if (z < 0) {
-			//std::cout << "right shift" << std::endl;
+			std::cout << "front shift" << std::endl;
 			//shift window to the right
 			for (int i = 0; i < world.chunkStoreSizeHor; ++i) {
 				for (int j = world.chunkStoreSizeHor - 1; j >= 0; --j) {
@@ -154,7 +154,7 @@ void CameraSystem::onUpdate() {
 		}
 		
 		if (y >= world.chunkSize) {
-			//std::cout << "left shift" << std::endl;
+			std::cout << "down shift" << std::endl;
 			//shift window to the left
 			for (int i = 0; i < world.chunkStoreSizeHor; ++i) {
 				for (int j = 0; j < world.chunkStoreSizeHor; ++j) {
@@ -173,7 +173,7 @@ void CameraSystem::onUpdate() {
 			cm.pos.y -= world.chunkSize;
 		}
 		else if (y < 0) {
-			//std::cout << "right shift" << std::endl;
+			std::cout << "up shift" << std::endl;
 			//shift window to the right
 			for (int i = 0; i < world.chunkStoreSizeHor; ++i) {
 				for (int j = 0; j < world.chunkStoreSizeHor; ++j) {
@@ -191,7 +191,7 @@ void CameraSystem::onUpdate() {
 			cm.pos.y += world.chunkSize;
 		}
 
-		//std::cout << cm.pos.x << " " << cm.pos.z << std::endl;
+		//std::cout << cm.pos << std::endl;
 	}
 
 }

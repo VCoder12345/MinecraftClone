@@ -25,6 +25,7 @@ void ProbeScene::prepare() {
 	//Shader blockInstaceShader = rm.loadShader("blockInstaceShader", "assets/shaders/blockInstanceShader.vert", "assets/shaders/blockInstanceShader.frag");
 	Shader blockShader = rm.loadShader("blockShader", "assets/shaders/blockShader.vert", "assets/shaders/blockShader.frag");
 	Shader slcBlockShader = rm.loadShader("slcBlockShader", "assets/shaders/slcShader.vert", "assets/shaders/slcShader.frag");
+	Shader debugCubeShader = rm.loadShader("debugCubeShader", "assets/shaders/debugCubeShader.vert", "assets/shaders/slcShader.frag");
 	//Texture dirtTex = rm.loadTexture("dirt", "assets/sprites/block/dirt.png", true, true);
 	//Texture sandstoneTex = rm.loadTexture("sandstone", "assets/sprites/block/sandstone.png", true, true);
 
@@ -70,7 +71,7 @@ void ProbeScene::prepare() {
 
 	addSystem(new CameraSystem());
 	//addSystem(new BlockInstanceRenderer(blockInstaceShader));
-	addSystem(new BlockRenderer(blockShader, slcBlockShader));
+	addSystem(new BlockRenderer(blockShader, slcBlockShader, debugCubeShader));
 	addSystem(new BlockPickSystem());
 	
 }
