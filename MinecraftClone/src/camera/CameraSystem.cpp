@@ -71,7 +71,6 @@ void CameraSystem::onUpdate() {
 			cm.pitch = -89.0f;
 		}
 
-		updateCamVectors(cm, t);
 
 		cm.moldPos = mpos;
 
@@ -82,37 +81,31 @@ void CameraSystem::onUpdate() {
 		if (x >= world.chunkSize) {
 			std::cout << "left shift" << std::endl;
 			//shift window to the left
-			for (int i = 0; i < world.chunkStoreSizeHor; ++i) {
+			for (int i = 0; i < world.chunkStoreSizeHor - 1; ++i) {
 				for (int j = 0; j < world.chunkStoreSizeHor; ++j) {
 					for (int k = 0; k < world.chunkStoreSizeVer; ++k) {
-						if (i == world.chunkStoreSizeHor - 1) {
-							world.setChunk(i, j, k, world.createChunk(i, j, k));
-						}
-						else {
-							world.setChunk(i, j, k,  world.getChunk(i + 1, j, k));
-						}
+						world.setChunk(i, j, k, world.getChunk(i + 1, j, k));
 					}
 				}
 			}
+
+			world.genBorderI(world.chunkStoreSizeHor - 1);
+			
+
 			world.shiftx++;
 			cm.pos.x -= world.chunkSize;
 		}
 		else if (x < 0) {
 			std::cout << "right shift" << std::endl;
 			//shift window to the right
-			for (int i = world.chunkStoreSizeHor - 1; i >= 0; --i) {
+			for (int i = world.chunkStoreSizeHor - 1; i >= 1; --i) {
 				for (int j = 0; j < world.chunkStoreSizeHor; ++j) {
 					for (int k = 0; k < world.chunkStoreSizeVer; ++k) {
-						if (i == 0) {
-							world.setChunk(i, j, k, world.createChunk(i, j, k));
-						}
-						else {
-							world.setChunk(i, j, k, world.getChunk(i - 1, j, k));
-						}
+						world.setChunk(i, j, k, world.getChunk(i - 1, j, k));
 					}
 				}
 			}
-			world.shiftx++;
+			world.shiftx--;
 			cm.pos.x += world.chunkSize;
 		}
 
@@ -120,14 +113,9 @@ void CameraSystem::onUpdate() {
 			std::cout << "back shift" << std::endl;
 			//shift window to the left
 			for (int i = 0; i < world.chunkStoreSizeHor; ++i) {
-				for (int j = 0; j < world.chunkStoreSizeHor; ++j) {
+				for (int j = 0; j < world.chunkStoreSizeHor - 1; ++j) {
 					for (int k = 0; k < world.chunkStoreSizeVer; ++k) {
-						if (j == world.chunkStoreSizeHor - 1) {
-							world.setChunk(i, j, k, world.createChunk(i, j, k));
-						}
-						else {
-							world.setChunk(i, j, k, world.getChunk(i, j + 1, k));
-						}
+						world.setChunk(i, j, k, world.getChunk(i, j + 1, k));
 					}
 				}
 			}
@@ -138,18 +126,13 @@ void CameraSystem::onUpdate() {
 			std::cout << "front shift" << std::endl;
 			//shift window to the right
 			for (int i = 0; i < world.chunkStoreSizeHor; ++i) {
-				for (int j = world.chunkStoreSizeHor - 1; j >= 0; --j) {
+				for (int j = world.chunkStoreSizeHor - 1; j >= 1; --j) {
 					for (int k = 0; k < world.chunkStoreSizeVer; ++k) {
-						if (j == 0) {
-							world.setChunk(i, j, k, world.createChunk(i, j, k));
-						}
-						else {
-							world.setChunk(i, j, k, world.getChunk(i, j - 1, k));
-						}
+						world.setChunk(i, j, k, world.getChunk(i, j - 1, k));
 					}
 				}
 			}
-			world.shiftz++;
+			world.shiftz--;
 			cm.pos.z += world.chunkSize;
 		}
 		
@@ -158,13 +141,8 @@ void CameraSystem::onUpdate() {
 			//shift window to the left
 			for (int i = 0; i < world.chunkStoreSizeHor; ++i) {
 				for (int j = 0; j < world.chunkStoreSizeHor; ++j) {
-					for (int k = 0; k < world.chunkStoreSizeVer; ++k) {
-						if (k == world.chunkStoreSizeHor - 1) {
-							world.setChunk(i, j, k, world.createChunk(i, j, k));
-						}
-						else {
-							world.setChunk(i, j, k, world.getChunk(i, j, k + 1));
-						}
+					for (int k = 0; k < world.chunkStoreSizeVer - 1; ++k) {
+						world.setChunk(i, j, k, world.getChunk(i, j, k + 1));
 					}
 				}
 			}
@@ -177,13 +155,8 @@ void CameraSystem::onUpdate() {
 			//shift window to the right
 			for (int i = 0; i < world.chunkStoreSizeHor; ++i) {
 				for (int j = 0; j < world.chunkStoreSizeHor; ++j) {
-					for (int k = world.chunkStoreSizeVer - 1; k >= 0; --k) {
-						if (k == 0) {
-							world.setChunk(i, j, k, world.createChunk(i, j, k));
-						}
-						else {
-							world.setChunk(i, j, k, world.getChunk(i, j, k - 1));
-						}
+					for (int k = world.chunkStoreSizeVer - 1; k >= 1; --k) {
+						world.setChunk(i, j, k, world.getChunk(i, j, k - 1));
 					}
 				}
 			}
@@ -192,6 +165,7 @@ void CameraSystem::onUpdate() {
 		}
 
 		//std::cout << cm.pos << std::endl;
+		updateCamVectors(cm, t);
 	}
 
 }

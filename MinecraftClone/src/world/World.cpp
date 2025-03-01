@@ -1,10 +1,12 @@
 #include "World.h"
+#include <thread>
 
 void World::init() {
 	//currentChunk->genMesh(quadCulling);
 }
 
 void World::setChunk(unsigned int i, unsigned int j, unsigned int k, Chunk* chunk) {
+	std::lock_guard<std::mutex> lock(_m);
 	chunks[chunkIndex(i, j, k)] = chunk;
 }
 
@@ -20,6 +22,51 @@ Chunk* World::createChunk(int i, int j, int k) {
 	worldGenerator.initChunk(chunk, x, y, g);
 	chunk->genMesh(quadCulling);
 	return chunk;
+}
+
+void World::genBorderI(unsigned int i) {
+	std::thread th(&World::genBorderIT, this, i);
+	th.detach();
+}
+
+void World::genBorderJ(unsigned int j) {
+	std::thread th(&World::genBorderIT, this, j);
+	th.detach();
+}
+
+void World::genBorderK(unsigned int k) {
+	std::thread th(&World::genBorderIT, this, k);
+	th.detach();
+}
+
+void World::genBorderIT(unsigned int i) {
+	for (int j = 0; j < chunkStoreSizeHor; ++j) {
+		for (int k = 0; k < chunkStoreSizeVer; ++k) {
+			setChunk(i, j, k, createChunk(i, j, k));
+		}
+	}
+}
+
+void World::genBorderJT(unsigned int j) {
+	for (int i = 0; i < chunkStoreSizeHor; ++i) {
+		for (int k = 0; k < chunkStoreSizeVer; ++k) {
+			setChunk(i, j, k, createChunk(i, j, k));
+		}
+	}
+}
+
+void World::genBorderKT(unsigned int k) {
+	for (int j = 0; j < chunkStoreSizeHor; ++j) {
+		for (int i = 0; i < chunkStoreSizeHor; ++i) {
+			setChunk(i, j, k, createChunk(i, j, k));
+		}
+	}
+}
+
+void World::createChunkThread(unsigned int i, unsigned int j, unsigned int k) {
+	Chunk* chunk = createChunk(i, j, k);
+
+	setChunk(i, j, k, chunk);
 }
 
 bool World::inBounds(int x, int y, int z) {

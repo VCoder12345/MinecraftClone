@@ -5,6 +5,7 @@
 #include <world/WorldGenerator.h>
 
 #include <vector>
+#include <mutex>
 
 
 struct BlockInfo {
@@ -85,5 +86,18 @@ public:
 	std::vector<Texture>& textures() {
 		return blFactory->textures;
 	}
+	void genBorderI(unsigned int i);
+	void genBorderJ(unsigned int j);
+	void genBorderK(unsigned int k);
+
+
+
+	void createChunkThread(unsigned int i, unsigned int j, unsigned int k);
+
+private:
+	std::mutex _m;
+	void genBorderIT(unsigned int i);
+	void genBorderJT(unsigned int j);
+	void genBorderKT(unsigned int k);
 };
 
