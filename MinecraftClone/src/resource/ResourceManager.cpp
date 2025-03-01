@@ -75,7 +75,7 @@ Texture ResourceManager::loadTextureFromFile(const char* filePath, bool alpha, b
 		texture.generate(width, height, data);
 	}
 	else {
-		std::cout << "Failed to load Texture file with path" << filePath << std::endl;
+		std::cout << "Failed to load Texture file with path " << filePath << std::endl;
 	}
 
 	stbi_image_free(data);

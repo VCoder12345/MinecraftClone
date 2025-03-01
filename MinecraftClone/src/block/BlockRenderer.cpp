@@ -27,7 +27,7 @@ void BlockRenderer::init() {
 	shader.setIntAr("textures", samplers, textures.size());
 
 	shader.setMat4("projection", projection);
-	shader.setInt("fog.isActive", 1);
+	shader.setInt("fog.isActive", 0);
 	shader.setVec3("fog.colour", glm::vec3(0.6f));
 	shader.setFloat("fog.density", 0.03f);
 

@@ -26,7 +26,7 @@ vec4 calcFog(vec3 pos, vec4 colour, Fog fog)
 	return vec4(resultColour.xyz, colour.w);
 }
 
-uniform sampler2D textures[5];
+uniform sampler2D textures[8];
 
 void main()
 {

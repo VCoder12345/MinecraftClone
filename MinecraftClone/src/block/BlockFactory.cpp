@@ -11,7 +11,7 @@ void BlockFactory::init() {
 	std::string textureNames[] = {
 		"smooth_stone", "dirt",
 		"furnace_top", "furnace_side",
-		"furnace_front"
+		"furnace_front", "grass_block_side", "grass_top", "stone"
 	};
 
 	int counter = 0;
@@ -22,11 +22,18 @@ void BlockFactory::init() {
 		++counter;
 	}
 
-	materials[MAT_STONE] = new Material(textureMap["smooth_stone"]);
+	for (int i = 0; i < 5; ++i) {
+		materials.push_back(nullptr);
+	}
+
+
+	materials[MAT_SMOOTH_STONE] = new Material(textureMap["smooth_stone"]);
 	materials[MAT_DIRT] = new Material(textureMap["dirt"]);
 	materials[MAT_FURNACE]
 		= new Material(textureMap["furnace_side"], textureMap["furnace_side"], textureMap["furnace_top"], textureMap["furnace_top"], textureMap["furnace_front"], textureMap["furnace_side"]);
-
+	materials[MAT_STONE] = new Material(textureMap["stone"]);
+	materials[MAT_GRASS_DIRT] = new Material(textureMap["grass_block_side"], textureMap["grass_top"], textureMap["dirt"]);
+	
 }
 
 Block* BlockFactory::createBlock(int type) {

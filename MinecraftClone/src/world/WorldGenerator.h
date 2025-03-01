@@ -6,10 +6,11 @@
 class WorldGenerator
 {
 public:
-	WorldGenerator();
+	WorldGenerator(unsigned int seed);
 	void initChunk(Chunk* chunk, int i, int j, int g);
 
 private:
+	unsigned int seed;
 	PerlinNoise perlin;
 };
 

@@ -40,7 +40,7 @@ public:
 	Selection slc;
 
 	World(int chunkStoreSizeHor, int chunkStoreSizeVer,  const int chunkVisualDistHor, const int chunkVisualDistVer, const int chunkSize)
-		: chunkStoreSizeHor(chunkStoreSizeHor), chunkStoreSizeVer(chunkStoreSizeVer), chunkVisualDistHor(chunkVisualDistHor), chunkVisualDistVer(chunkVisualDistVer), chunkSize(chunkSize){
+		: chunkStoreSizeHor(chunkStoreSizeHor), chunkStoreSizeVer(chunkStoreSizeVer), chunkVisualDistHor(chunkVisualDistHor), chunkVisualDistVer(chunkVisualDistVer), chunkSize(chunkSize), worldGenerator(200) {
 		blFactory = new BlockFactory();
 		chunks = new Chunk * [chunkStoreSizeHor * chunkStoreSizeHor * chunkStoreSizeVer];
 
