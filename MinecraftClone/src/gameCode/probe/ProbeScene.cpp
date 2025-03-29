@@ -66,12 +66,12 @@ void ProbeScene::prepare() {
 	camera = new Entity("Camera");
 	camera->addComponent(new Transform(glm::mat4(1.0f)));
 	camera->addComponent(new CameraMove(glm::vec3(0, 0, 0)));
-	camera->addComponent(new BlockPicker(2000));
+	camera->addComponent(new BlockPicker(20));
 	addEntity(camera);
 
 	addSystem(new CameraSystem());
 	//addSystem(new BlockInstanceRenderer(blockInstaceShader));
-	addSystem(new BlockRenderer(blockShader, slcBlockShader, debugCubeShader));
+	addSystem(new BlockRenderer(blockShader, slcBlockShader, debugCubeShader, true));
 	addSystem(new BlockPickSystem());
 	
 }

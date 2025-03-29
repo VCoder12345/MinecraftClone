@@ -1,4 +1,5 @@
 #include "WorldGenerator.h"
+#include <globals/Globals.h>
 
 WorldGenerator::WorldGenerator(unsigned int seed) : seed(seed), perlin(seed) {
 	srand(seed);
@@ -13,6 +14,7 @@ int randInt(int min, int max) {
 }
 
 void WorldGenerator::initChunk(Chunk* chunk, int i, int j, int g) {
+
 	bool overflow;
 	int h;
 	for (int x = 0; x < chunk->size; ++x) {
@@ -26,6 +28,7 @@ void WorldGenerator::initChunk(Chunk* chunk, int i, int j, int g) {
 				float r = (perlin.fractalBrownianMotion((float)x / chunk->size + i, (float)y / chunk->size + j, 0.0f, 6) + 1) / 2;
 
 				h = (int)(r * 38) - g * chunk->size;
+
 
 				if (h > chunk->size) {
 					h = chunk->size;
@@ -48,4 +51,6 @@ void WorldGenerator::initChunk(Chunk* chunk, int i, int j, int g) {
 			}
 		}
 	}
+
+	chunk->genVertices(true);
 }

@@ -32,9 +32,11 @@ public:
 	const float backFaceIntensity = 0.8f;
 	const float leftFaceIntensity = 0.6f;
 	const float rightFaceIntensity = 0.6f;
+	bool meshGenerated = false;
+	std::vector<float> vertices;
 
 
-	Chunk(const int size, BlockFactory* blFactory) : size(size), totalNumBlocks(size * size * size), blFactory(blFactory) {
+	Chunk(const int size, BlockFactory* blFactory) : size(size), totalNumBlocks(size* size* size), blFactory(blFactory), mesh({ 0, 0 }) {
 		this->blocks = new Block * [totalNumBlocks];
 
 		for (int i = 0; i < totalNumBlocks; ++i) {
@@ -66,5 +68,7 @@ public:
 
 	BlockMesh& getMesh();
 
+	void genVertices(bool quadCulling);
 	void genMesh(bool quadCulling);
+	
 };

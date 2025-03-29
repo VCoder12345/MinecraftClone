@@ -81,7 +81,7 @@ void CameraSystem::onUpdate() {
 		if (x >= world.chunkSize) {
 			std::cout << "left shift" << std::endl;
 			//shift window to the left
-			for (int i = 0; i < world.chunkStoreSizeHor - 1; ++i) {
+			for (int i = 0; i < world.chunkStoreSizeHor; ++i) {
 				for (int j = 0; j < world.chunkStoreSizeHor; ++j) {
 					for (int k = 0; k < world.chunkStoreSizeVer; ++k) {
 						world.setChunk(i, j, k, world.getChunk(i + 1, j, k));
@@ -89,23 +89,27 @@ void CameraSystem::onUpdate() {
 				}
 			}
 
-			world.genBorderI(world.chunkStoreSizeHor - 1);
+			
 			
 
 			world.shiftx++;
+			world.genBorderI(world.chunkStoreSizeHor - 1);
 			cm.pos.x -= world.chunkSize;
 		}
 		else if (x < 0) {
 			std::cout << "right shift" << std::endl;
 			//shift window to the right
-			for (int i = world.chunkStoreSizeHor - 1; i >= 1; --i) {
+			for (int i = world.chunkStoreSizeHor - 1; i >= 0; --i) {
 				for (int j = 0; j < world.chunkStoreSizeHor; ++j) {
 					for (int k = 0; k < world.chunkStoreSizeVer; ++k) {
 						world.setChunk(i, j, k, world.getChunk(i - 1, j, k));
 					}
 				}
 			}
+			
+
 			world.shiftx--;
+			world.genBorderI(0);
 			cm.pos.x += world.chunkSize;
 		}
 
@@ -113,26 +117,30 @@ void CameraSystem::onUpdate() {
 			std::cout << "back shift" << std::endl;
 			//shift window to the left
 			for (int i = 0; i < world.chunkStoreSizeHor; ++i) {
-				for (int j = 0; j < world.chunkStoreSizeHor - 1; ++j) {
+				for (int j = 0; j < world.chunkStoreSizeHor; ++j) {
 					for (int k = 0; k < world.chunkStoreSizeVer; ++k) {
 						world.setChunk(i, j, k, world.getChunk(i, j + 1, k));
 					}
 				}
 			}
+			
 			world.shiftz++;
+			world.genBorderJ(world.chunkStoreSizeHor - 1);
 			cm.pos.z -= world.chunkSize;
 		}
 		else if (z < 0) {
 			std::cout << "front shift" << std::endl;
 			//shift window to the right
 			for (int i = 0; i < world.chunkStoreSizeHor; ++i) {
-				for (int j = world.chunkStoreSizeHor - 1; j >= 1; --j) {
+				for (int j = world.chunkStoreSizeHor - 1; j >= 0; --j) {
 					for (int k = 0; k < world.chunkStoreSizeVer; ++k) {
 						world.setChunk(i, j, k, world.getChunk(i, j - 1, k));
 					}
 				}
 			}
+			
 			world.shiftz--;
+			world.genBorderJ(0);
 			cm.pos.z += world.chunkSize;
 		}
 		
@@ -141,13 +149,14 @@ void CameraSystem::onUpdate() {
 			//shift window to the left
 			for (int i = 0; i < world.chunkStoreSizeHor; ++i) {
 				for (int j = 0; j < world.chunkStoreSizeHor; ++j) {
-					for (int k = 0; k < world.chunkStoreSizeVer - 1; ++k) {
+					for (int k = 0; k < world.chunkStoreSizeVer; ++k) {
 						world.setChunk(i, j, k, world.getChunk(i, j, k + 1));
 					}
 				}
 			}
-
+			
 			world.yOffset++;
+			world.genBorderK(world.chunkStoreSizeVer - 1);
 			cm.pos.y -= world.chunkSize;
 		}
 		else if (y < 0) {
@@ -155,12 +164,14 @@ void CameraSystem::onUpdate() {
 			//shift window to the right
 			for (int i = 0; i < world.chunkStoreSizeHor; ++i) {
 				for (int j = 0; j < world.chunkStoreSizeHor; ++j) {
-					for (int k = world.chunkStoreSizeVer - 1; k >= 1; --k) {
+					for (int k = world.chunkStoreSizeVer - 1; k >= 0; --k) {
 						world.setChunk(i, j, k, world.getChunk(i, j, k - 1));
 					}
 				}
 			}
+			
 			world.yOffset--;
+			world.genBorderK(0);
 			cm.pos.y += world.chunkSize;
 		}
 

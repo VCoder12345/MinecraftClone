@@ -1,42 +1,54 @@
 #include "World.h"
 #include <thread>
+#include <future>
 
 void World::init() {
 	//currentChunk->genMesh(quadCulling);
 }
 
 void World::setChunk(unsigned int i, unsigned int j, unsigned int k, Chunk* chunk) {
-	std::lock_guard<std::mutex> lock(_m);
+	_m.lock();
+	
 	chunks[chunkIndex(i, j, k)] = chunk;
+	_m.unlock();
 }
 
 Chunk* World::getChunk(unsigned int i, unsigned int j, unsigned int k) {
+	if (i < 0 || i >= chunkStoreSizeHor) return nullptr;
+	if (j < 0 || j >= chunkStoreSizeHor) return nullptr;
+	if (k < 0 || k >= chunkStoreSizeVer) return nullptr;
 	return chunks[chunkIndex(i, j, k)];
 }
 
 Chunk* World::createChunk(int i, int j, int k) {
 	Chunk* chunk = new Chunk(chunkSize, blFactory);
+
 	int x = i + shiftx;
 	int y = j + shiftz;
 	int g = yOffset - chunkStoreSizeVer / 2 + k;
+
 	worldGenerator.initChunk(chunk, x, y, g);
-	chunk->genMesh(quadCulling);
 	return chunk;
 }
 
 void World::genBorderI(unsigned int i) {
 	std::thread th(&World::genBorderIT, this, i);
 	th.detach();
+	/*genBorderIT(i);*/
 }
 
 void World::genBorderJ(unsigned int j) {
-	std::thread th(&World::genBorderIT, this, j);
+	std::thread th(&World::genBorderJT, this, j);
 	th.detach();
+
+	/*genBorderJT(j);*/
 }
 
 void World::genBorderK(unsigned int k) {
-	std::thread th(&World::genBorderIT, this, k);
+	std::thread th(&World::genBorderKT, this, k);
 	th.detach();
+
+	/*genBorderKT(k);*/
 }
 
 void World::genBorderIT(unsigned int i) {
@@ -45,6 +57,8 @@ void World::genBorderIT(unsigned int i) {
 			setChunk(i, j, k, createChunk(i, j, k));
 		}
 	}
+
+	std::cout << "border i " << i << std::endl;
 }
 
 void World::genBorderJT(unsigned int j) {
@@ -53,6 +67,8 @@ void World::genBorderJT(unsigned int j) {
 			setChunk(i, j, k, createChunk(i, j, k));
 		}
 	}
+
+	std::cout << "border j " << j << std::endl;
 }
 
 void World::genBorderKT(unsigned int k) {
@@ -61,13 +77,11 @@ void World::genBorderKT(unsigned int k) {
 			setChunk(i, j, k, createChunk(i, j, k));
 		}
 	}
+
+	std::cout << "border k " << k << std::endl;
 }
 
-void World::createChunkThread(unsigned int i, unsigned int j, unsigned int k) {
-	Chunk* chunk = createChunk(i, j, k);
 
-	setChunk(i, j, k, chunk);
-}
 
 bool World::inBounds(int x, int y, int z) {
 	return false;

@@ -1,6 +1,5 @@
 #include <world/Chunk.h>
-
-
+#include "globals/Globals.h"
 
 int Chunk::toIndex(int i, int j, int k) const {
 	return (k * size * size) + (j * size) + i;
@@ -42,7 +41,6 @@ void Chunk::setBlock(int type, int i, int j, int k) {
 	
 
 	blocks[index] = blFactory->createBlock(type);
-	//Game::instance().getCurrentScene().addEntity(blocks[index]);
 }
 
 void Chunk::deleteBlock(int i, int j, int k) {
@@ -50,11 +48,14 @@ void Chunk::deleteBlock(int i, int j, int k) {
 
 	blocks[index] = nullptr;
 	--numBlocks;
+
 }
 
-void Chunk::genMesh(bool quadCulling) {
+void Chunk::genVertices(bool quadCulling) {
+	meshGenerated = false;
+	vertices.clear();
+
 	if (numBlocks == 0) return;
-	std::vector<float> allVertices;
 
 	for (int i = 0; i < size; ++i) {
 		for (int j = 0; j < size; ++j) {
@@ -73,85 +74,92 @@ void Chunk::genMesh(bool quadCulling) {
 
 				//back
 				if (!quadCulling || j == 0 || isBlockEmpty(i, j - 1, k)) {
-					allVertices.insert(allVertices.end(), {
+					vertices.insert(vertices.end(), {
 						lx, ly, lz,  0.0f, 1.0f, bl->material->texIndexBack, backFaceIntensity,
 						rx, ly, lz,  1.0f, 1.0f, bl->material->texIndexBack, backFaceIntensity,
 						rx, ry, lz,  1.0f, 0.0f, bl->material->texIndexBack, backFaceIntensity,
 						rx, ry, lz,  1.0f, 0.0f, bl->material->texIndexBack, backFaceIntensity,
 						lx, ry, lz,  0.0f, 0.0f, bl->material->texIndexBack, backFaceIntensity,
 						lx, ly, lz,  0.0f, 1.0f, bl->material->texIndexBack, backFaceIntensity
-					});
+						});
 				}
-				
+
 
 				//front
 				if (!quadCulling || j == size - 1 || isBlockEmpty(i, j + 1, k)) {
-					allVertices.insert(allVertices.end(), {
+					vertices.insert(vertices.end(), {
 						lx, ly, rz, 0.0f, 1.0f, bl->material->texIndexFront, frontFaceIntensity,
 						rx, ly, rz, 1.0f, 1.0f, bl->material->texIndexFront, frontFaceIntensity,
 						rx, ry, rz, 1.0f, 0.0f, bl->material->texIndexFront, frontFaceIntensity,
 						rx, ry, rz, 1.0f, 0.0f, bl->material->texIndexFront, frontFaceIntensity,
 						lx, ry, rz, 0.0f, 0.0f, bl->material->texIndexFront, frontFaceIntensity,
-						lx, ly, rz, 0.0f, 1.0f, bl->material->texIndexFront, frontFaceIntensity 
-					});
+						lx, ly, rz, 0.0f, 1.0f, bl->material->texIndexFront, frontFaceIntensity
+						});
 				}
 
 
 				//left
 				if (!quadCulling || i == 0 || isBlockEmpty(i - 1, j, k)) {
-					allVertices.insert(allVertices.end(), {
+					vertices.insert(vertices.end(), {
 						lx, ry, rz,  0.0f, 0.0f, bl->material->texIndexLeft, leftFaceIntensity,
 						lx, ry, lz,  1.0f, 0.0f, bl->material->texIndexLeft, leftFaceIntensity,
 						lx, ly, lz,  1.0f, 1.0f, bl->material->texIndexLeft, leftFaceIntensity,
 						lx, ly, lz,  1.0f, 1.0f, bl->material->texIndexLeft, leftFaceIntensity,
 						lx, ly, rz,  0.0f, 1.0f, bl->material->texIndexLeft, leftFaceIntensity,
 						lx, ry, rz,  0.0f, 0.0f, bl->material->texIndexLeft, leftFaceIntensity
-					});
+						});
 				}
-				
+
 
 				//right
 				if (!quadCulling || i == size - 1 || isBlockEmpty(i + 1, j, k)) {
-					allVertices.insert(allVertices.end(), {
+					vertices.insert(vertices.end(), {
 						rx, ry, rz,  0.0f, 0.0f, bl->material->texIndexRight, rightFaceIntensity,
 						rx, ry, lz,  1.0f, 0.0f, bl->material->texIndexRight, rightFaceIntensity,
 						rx, ly, lz,  1.0f, 1.0f, bl->material->texIndexRight, rightFaceIntensity,
 						rx, ly, lz,  1.0f, 1.0f, bl->material->texIndexRight, rightFaceIntensity,
 						rx, ly, rz,  0.0f, 1.0f, bl->material->texIndexRight, rightFaceIntensity,
 						rx, ry, rz,  0.0f, 0.0f, bl->material->texIndexRight, rightFaceIntensity
-					});
+						});
 				}
-				
+
 
 				//bottom
 				if (!quadCulling || k == 0 || isBlockEmpty(i, j, k - 1)) {
-					allVertices.insert(allVertices.end(), {
+					vertices.insert(vertices.end(), {
 						lx, ly, lz,  0.0f, 1.0f, bl->material->texIndexBottom, bottomFaceIntensity,
 						rx, ly, lz,  1.0f, 1.0f, bl->material->texIndexBottom, bottomFaceIntensity,
 						rx, ly, rz,  1.0f, 0.0f, bl->material->texIndexBottom, bottomFaceIntensity,
 						rx, ly, rz,  1.0f, 0.0f, bl->material->texIndexBottom, bottomFaceIntensity,
 						lx, ly, rz,  0.0f, 0.0f, bl->material->texIndexBottom, bottomFaceIntensity,
 						lx, ly, lz,  0.0f, 1.0f, bl->material->texIndexBottom, bottomFaceIntensity
-					});
+						});
 				}
-				
+
 
 				//top
 				if (!quadCulling || k == size - 1 || isBlockEmpty(i, j, k + 1)) {
-					allVertices.insert(allVertices.end(), {
+					vertices.insert(vertices.end(), {
 						lx, ry, lz,  0.0f, 1.0f, bl->material->texIndexTop, topFaceIntensity,
 						rx, ry, lz,  1.0f, 1.0f, bl->material->texIndexTop,	topFaceIntensity,
 						rx, ry, rz,  1.0f, 0.0f, bl->material->texIndexTop,	topFaceIntensity,
 						rx, ry, rz,  1.0f, 0.0f, bl->material->texIndexTop,	topFaceIntensity,
 						lx, ry, rz,  0.0f, 0.0f, bl->material->texIndexTop,	topFaceIntensity,
 						lx, ry, lz,  0.0f, 1.0f, bl->material->texIndexTop,	topFaceIntensity
-					});
+						});
 				}
 			}
 		}
 	}
+}
+
+void Chunk::genMesh(bool quadCulling) {
+	if (numBlocks == 0) {
+		return;
+	}
 
 	unsigned int vbo, ebo;
+
 	glGenVertexArrays(1, &mesh.VAO);
 	glGenBuffers(1, &vbo);
 	glGenBuffers(1, &ebo);
@@ -159,7 +167,7 @@ void Chunk::genMesh(bool quadCulling) {
 	glBindVertexArray(mesh.VAO);
 
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, allVertices.size() * sizeof(float), &allVertices[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), &vertices[0], GL_STATIC_DRAW);
 
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
@@ -178,7 +186,9 @@ void Chunk::genMesh(bool quadCulling) {
 	glBindVertexArray(0);
 
 
-	mesh.numTriangles = allVertices.size() / 5;
+	mesh.numTriangles = vertices.size() / 5;
+
+	meshGenerated = true;
 }
 
 BlockMesh& Chunk::getMesh() {

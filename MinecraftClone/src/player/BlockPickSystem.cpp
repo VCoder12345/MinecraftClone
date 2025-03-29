@@ -185,7 +185,7 @@ void BlockPickSystem::onMouseEvent(MouseEvent* ev) {
 			//destroy
 			Chunk* chunk = world.chunks[world.slc.info.chunk];
 			chunk->deleteBlock(world.slc.info.i, world.slc.info.j, world.slc.info.k);
-			chunk->genMesh(world.quadCulling);
+			chunk->genVertices(true);
 		}
 		else if (ev->btn == GLFW_MOUSE_BUTTON_RIGHT) {
 			//add block
@@ -228,7 +228,7 @@ void BlockPickSystem::onMouseEvent(MouseEvent* ev) {
 				/*Chunk* oChunk = world.chunks[world.slc.info.chunk];
 				Block* bl = oChunk->get(world.slc.info.i, world.slc.info.j, world.slc.info.k);*/
 				chunk->setBlock(MAT_STONE, info.i, info.j, info.k);
-				chunk->genMesh(world.quadCulling);
+				chunk->genVertices(true);
 			}
 
 		}

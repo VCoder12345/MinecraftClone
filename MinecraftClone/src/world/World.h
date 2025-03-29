@@ -27,7 +27,6 @@ struct Selection {
 class World
 {
 public:
-	bool quadCulling = true;
 	BlockFactory* blFactory;
 	const int chunkSize;
 	Chunk** chunks;
@@ -39,6 +38,7 @@ public:
 	int yOffset = 0;
 	WorldGenerator worldGenerator;
 	Selection slc;
+	bool quadCulling = true;
 
 	World(int chunkStoreSizeHor, int chunkStoreSizeVer,  const int chunkVisualDistHor, const int chunkVisualDistVer, const int chunkSize)
 		: chunkStoreSizeHor(chunkStoreSizeHor), chunkStoreSizeVer(chunkStoreSizeVer), chunkVisualDistHor(chunkVisualDistHor), chunkVisualDistVer(chunkVisualDistVer), chunkSize(chunkSize), worldGenerator(200) {
@@ -91,8 +91,6 @@ public:
 	void genBorderK(unsigned int k);
 
 
-
-	void createChunkThread(unsigned int i, unsigned int j, unsigned int k);
 
 private:
 	std::mutex _m;

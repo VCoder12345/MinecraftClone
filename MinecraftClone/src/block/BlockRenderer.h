@@ -10,7 +10,7 @@ class BlockRenderer :
 	public Renderer
 {
 public:
-	BlockRenderer(Shader shader, Shader slcShader, Shader cubeShader);
+	BlockRenderer(Shader shader, Shader slcShader, Shader cubeShader, bool quadCulling);
 	~BlockRenderer() {
 	}
 	void init();
@@ -24,5 +24,6 @@ public:
 private:
 	unsigned int slcVAO;
 	Shader slcShader, cubeShader;
+	bool quadCulling;
 };
 

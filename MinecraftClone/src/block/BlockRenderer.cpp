@@ -9,7 +9,7 @@
 #include <globals/Globals.h>
 #include <camera/CameraMove.h>
 
-BlockRenderer::BlockRenderer(Shader shader, Shader slcShader, Shader cubeShader) : Renderer(shader), slcShader(slcShader), cubeShader(cubeShader) {
+BlockRenderer::BlockRenderer(Shader shader, Shader slcShader, Shader cubeShader, bool quadCulling) : Renderer(shader), slcShader(slcShader), cubeShader(cubeShader), quadCulling(quadCulling) {
 	init(); 
 }
 
@@ -137,8 +137,16 @@ void BlockRenderer::onRender() {
 
 				glm::vec3 offset = glm::vec3(di, dk, dj) * (float)world.chunkSize;
 				if (shouldRenderChunk(offset, pv)) {
-					BlockMesh& mesh = world.getChunk(i, j, k)->getMesh();
-					renderBlockMesh(mesh, offset);
+					Chunk* chunk = world.getChunk(i, j, k);
+
+					if (chunk != nullptr) {
+						if (!chunk->meshGenerated) {
+							chunk->genMesh(quadCulling);
+						}
+
+						BlockMesh& mesh = chunk->getMesh();
+						renderBlockMesh(mesh, offset);
+					}
 				}
 				else {
 					++cullCounter;

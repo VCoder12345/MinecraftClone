@@ -65,6 +65,8 @@ float PerlinNoise::grad(int hash, float x, float y, float z) {
 }
 
 float PerlinNoise::noise(float x, float y, float z) {
+	if (x < 0) x = -x;
+	if (y < 0) y = -y;
 	int xi = (int)x & 255;
 	int yi = (int)y & 255;
 	int zi = (int)z & 255;
